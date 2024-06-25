@@ -110,7 +110,16 @@ def add_tag():
             notes[key]['теги'].append(tag)
             tags_list.clear()
             tags_list.addItems(notes[key]['теги'])
+        with open('notes.json', 'w', encoding='UTF8') as file:
+            json.dump(notes,file,ensure_ascii=False)
 
+def del_tag():
+    if notes_list.selectedItems():
+        key = notes_list.selectedItems()[0].text()
+        tag = tags_list.selectedItems()[0].text()
+        notes[key]['теги'].remove(tag)
+        tags_list.clear()
+        tags_list.addItems(notes[key]['теги'])
         with open('notes.json', 'w', encoding='UTF8') as file:
             json.dump(notes,file,ensure_ascii=False)
 
@@ -118,8 +127,8 @@ notes_list.itemClicked.connect(show_note)
 create_note.clicked.connect(add_note)
 save_note.clicked.connect(safe_note)
 delete_note.clicked.connect(del_note)
-
 create_tag.clicked.connect(add_tag)
+delete_tag.clicked.connect(del_tag)
 
 with open('notes.json','r',encoding='UTF8') as file:
     notes = json.load(file)
